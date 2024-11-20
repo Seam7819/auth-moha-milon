@@ -1,4 +1,7 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../Providers/AuthProvider";
+import auth from "../../Firebase/Firebase.config";
 
 const Header = () => {
 
@@ -9,6 +12,13 @@ const Header = () => {
     <li><Link to='/register'>Register</Link></li>
 
     </>
+
+    const {user,logOut}  = useContext(AuthContext)
+
+    const handleLogOut = () =>{
+      logOut(auth)
+    .then(()=>console.log("logOut"))
+    }
 
     return (
         <div className="navbar bg-base-100">
@@ -46,7 +56,14 @@ const Header = () => {
     </ul>
   </div>
   <div className="navbar-end">
-    <a className="btn">Button</a>
+
+    {
+      user ? <>{user.email}
+      <button onClick={handleLogOut} className="btn">SignOut</button>
+      </>:
+      <Link to='/login'>LogIn</Link>
+    }
+    
   </div>
 </div>
     );
